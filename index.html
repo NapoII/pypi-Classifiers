@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Classifiers List</title>
+    <style>
+        /* Farbpalette */
+:root {
+    --primary-color: #042326;
+    --secondary-color: #0A3A40;
+    --text-color: #1D7373;
+    --background-color: #042326;;
+
+    --tertiary-color: #f44336;
+    --border-color: #ddd;
+}
+
+
+        /* allgemeine Einstellungen */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  color: var(--text-color);
+  margin: auto;
+  font-size: 35px;
+
+}
+
+li {
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+}
+
+
+
+/* Layout */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.button-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-gap: 10px;
+  justify-items: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: none;
+  border-radius: 1px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: var(--text-color); 
+  width: fit-content;
+  min-width: 150px;
+}
+
+.selected-item {
+  margin-bottom: 5px;
+}
+
+#selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #666;
+}
+
+.selected-item {
+  width: 100%;
+}
+
+.remove-button {
+  margin-left: 5px;
+  font-size: 20px;
+  color: var(--text-color);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.remove-button:hover {
+  color: var(--secondary-color);
+}
+
+#output-field {
+  width: 80%;
+  height: 100px;
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #432121;
+  color: var(--text-color);
+  border-radius: 5px;
+}
+
+#output-button,
+#copy-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 25px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#output-button:hover,
+#copy-button:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Button-Größenanpassung */
+@media (min-width: 768px) {
+  .button-row {
+    max-width: 800px;
+  }
+
+  .button {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Button-Hover-Effekte */
+.button:hover {
+  background-color: var(--secondary-color);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+    </style>
+    <script>
+        window.onload = function() {
+            // Lade den Inhalt der Textdatei in eine Variable
+            fetch('classifiers-list.txt')
+                .then(response => response.text())
+                .then(data => {
+                    // Teile den Inhalt der Textdatei in einzelne Elemente auf
+                    let elements = data.trim().split('\n');
+
+                    // Füge jedes Element als anklickbare Schaltfläche zur Seite hinzu
+                    let buttonContainer = document.getElementById('button-container');
+                    let counter = 0;
+                    elements.forEach(element => {
+                        let button = document.createElement('button');
+                        button.className = 'button';
+                        button.innerText = element;
+                        button.onclick = function() {
+                            // Füge das ausgewählte Element zu der Liste hinzu
+                            let listItem = document.createElement('li');
+                            listItem.className = 'selected-item';
+                            listItem.innerHTML = `
+                                <span>${element}</span>
+                                <button class="remove-button">Remove</button>
+                            `;
+                            listItem.querySelector('.remove-button').onclick = function() {
+                                // Entferne das ausgewählte Element aus der Liste
+                                listItem.remove();
+                            };
+                            document.getElementById('selected-items').appendChild(listItem);
+                        };
+                        buttonContainer.appendChild(button);
+                        counter++;
+                    });
+                });
+
+            // Füge die Funktionalität zur Ausgabe- und Kopierschaltfläche hinzu
+            document.getElementById('output-button').onclick = function() {
+                // Konvertiere die Liste der ausgewählten Elemente in einen formatierten String
+                let selectedItems = Array.from(document.getElementById('selected-items').children)
+                    .map(item => "'" + item.querySelector('span').innerText.trim() + "',")
+                    .join('\n');
+
+                // Zeige den formatierten String im Ausgabefeld an
+                document.getElementById('output-field').value = selectedItems;
+            };
+            document.getElementById('copy-button').onclick = function() {
+                // Kopiere den Inhalt des Ausgabefelds in die Zwischenablage
+                document.getElementById('output-field').select();
+                document.execCommand('copy');
+            };
+        };
+    </script>
+</head>
+<body>
+    <hr>
+    <h2>Instructions</h2>
+<ol>
+  <li>Select all the classifiers you want from the list.</li>
+  <li>Review and make any necessary changes to the selected classifiers at the bottom of the webpage.</li>
+  <li>Generate the output by clicking on the "Output Selected Items" button.</li>
+  <li>Finally, add the output to your Python project by clicking on the "Copy" button to copy it to your clipboard.</li>
+</ol>
+<hr>
+    <div id="button-container"></div>
+
+    <hr>
+
+    <h2>Selected Items</h2>
+    <ul id="selected-items"></ul>
+
+    <hr>
+
+    <h2>Output</h2>
+    <textarea id="output-field"></textarea>
+    <br>
+    <button id="output-button">Output Selected Items</button>
+    <button id="copy-button">Copy to Clipboard</button>
+    <hr>
+</body>
+</html>
