@@ -11,23 +11,23 @@ This streamlined process can save developers time and effort, allowing them to f
 To get started, simply visit the website and select the relevant classifiers for your project. Once you have made your selections, generate the code and add it to your PyPI project.
 ## 📝 Table of Contents
 + [Demo / Working](#demo)
-+ [Install](#usage)
 + [How it works](#Use)
++ [Clone](#usage)
 + [Lizenz](#Lizenz)
 ## 🎥 Demo / Working <a name = "demo"></a>
-coming soon...
+[![pypi-Classifiers](https://raw.githubusercontent.com/NapoII/pypi-Classifiers/main/README_img/gif_use.gif)](https://napoii.github.io/pypi-Classifiers/)
 
-## 💻 Install <a name = "usage"></a>
+## 💭 How it works <a name = "Use"></a>
+Use the website --> https://napoii.github.io/pypi-Classifiers/
+
+Select all the classifiers you want from the list.
+Review and make any necessary changes to the selected classifiers at the bottom of the webpage.
+Generate the output by clicking on the "Output Selected Items" button.
+Finally, add the output to your Python project by clicking on the "Copy" button to copy it to your clipboard.
+
+## 💻 Clone <a name = "usage"></a>
 ```cmd
 git clone https://github.com/NapoII/pypi-Classifiers
-pip install -r requirements.txt
-```
-## 💭 How it works <a name = "Use"></a>
-
-start pypi-Classifiers.py directly from the folder or run in cmd:
-```cmd
-cd <local path of pypi-Classifiers>
-python pypi-Classifiers.py
 ```
 
 ## 📚 Lizenz <a name = "Lizenz"></a>
